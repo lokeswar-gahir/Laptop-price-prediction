@@ -48,24 +48,32 @@ gpu = st.selectbox("GPU",df["Gpu brand"].unique())
 os = st.selectbox("OS",df["os"].unique())
 
 if st.button('Pridict Price'):
+    st.title("Result:\n")
     #query
-    ppi=None
+    try:
+        ppi=None
 
-    if touchscreen=="Yes":
-        touchscreen=1
-    else:
-        touchscreen=0
-    
-    if ips=="Yes":
-        ips=1
-    else:
-        ips=0
+        if touchscreen=="Yes":
+            touchscreen=1
+        else:
+            touchscreen=0
+        
+        if ips=="Yes":
+            ips=1
+        else:
+            ips=0
 
-    res_x = int(resolution.split("x")[0])
-    res_y = int(resolution.split("x")[1])
-    ppi = ((res_x**2)+(res_y**2))**0.5/screen_size
-    query = np.array([company,type,ram,weight,touchscreen,ips,ppi,cpu,hdd,ssd,gpu,os])
-    query = query.reshape(1,12)
-    y_pred = pipe.predict(query)
-    output = np.exp(y_pred)
-    st.title(f"The price of the configured laptop is: {round(output[0],2)}.")
+        res_x = int(resolution.split("x")[0])
+        res_y = int(resolution.split("x")[1])
+        ppi = ((res_x**2)+(res_y**2))**0.5/screen_size
+        query = np.array([company,type,ram,weight,touchscreen,ips,ppi,cpu,hdd,ssd,gpu,os])
+        query = query.reshape(1,12)
+        y_pred = pipe.predict(query)
+        output = np.exp(y_pred)
+        st.title(f"The price of the configured laptop is: {round(output[0],2)}.")
+    except Exception as e:
+        if screen_size == 0:
+            st.write("!!! Screen size can not be 0.")
+        if weight == 0:
+            st.write("!!! Please Enter the weight.")
+        st.write("ERROR: ",e)
