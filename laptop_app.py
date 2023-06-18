@@ -7,6 +7,7 @@ pipe = pickle.load(open("pipe.pkl","rb"))
 df = pickle.load(open("df.pkl","rb"))
 
 st.title("Laptop Price Predictor")
+st.write("Enter the following form to get the predicted price of your configured personal computer :)")
 
 # brand
 company = st.selectbox("Brand",df["Company"].unique())
